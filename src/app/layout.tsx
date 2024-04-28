@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import DashboardHeader from "@/components/dashboard-header";
+import Providers from "@/providers";
+import DashboardSideBar from "@/components/dashboard-sidebar";
+import { cn } from "@/lib/utils";
+import { HEADER_HEIGHT } from "@/lib/constants";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +22,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn("min-h-screen", inter.className)}>
+        <Providers>
+          <div className="flex w-full">
+            <DashboardSideBar />
+            <div className="grow">
+              <DashboardHeader />
+              <main
+                className="bg-[#f8f8f8] lg:p-[25px]"
+                style={{ height: `calc(100vh - ${HEADER_HEIGHT}px)` }}
+              >
+                <ScrollArea className="bg-white h-full w-full" type="always">
+                  {children}
+                </ScrollArea>
+              </main>
+            </div>
+          </div>
+        </Providers>
+      </body>
     </html>
   );
 }
